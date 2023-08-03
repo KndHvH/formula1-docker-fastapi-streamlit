@@ -32,7 +32,7 @@ docker/build: generate-default-env-file
 	docker-compose build ${APP_NAME}
 
 docker/up:
-	docker-compose up -d
+	docker-compose up -d --build
 
 docker/down:
 	docker-compose down --remove-orphans

@@ -22,7 +22,8 @@ class F1DatabaseConnection:
 
         except psycopg2.Error as error:
             self.status = f"Erro ao obter conexão com servidor: {error}"
-            return None
+            print(self.status)
+            return self.status
 
     def get_dataframe_by_query(self, query):
         with self._get_connection() as connection:
