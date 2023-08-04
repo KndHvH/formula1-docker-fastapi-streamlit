@@ -4,7 +4,8 @@ import pandas as pd
 from psycopg2 import Error
 from dotenv import load_dotenv
 
-class F1DatabaseConnection:
+
+class DatabaseConnection:
     def __init__(self) -> None:
         self.status = "OK"
 
@@ -21,13 +22,14 @@ class F1DatabaseConnection:
             return connection
 
         except psycopg2.Error as error:
-            self.status = f"Erro ao obter conexão com servidor: {error}"
-            print(self.status)
-            return self.status
-
+            print(f"Erro ao obter conexão com servidor: {error}")
+            raise error
+        
     def get_dataframe_by_query(self, query):
-        with self._get_connection() as connection:
-            if connection is None: return None
+        connection = self._get_connection()
+        with connection:
+            if connection is None:
+                return None
             with connection.cursor() as cursor:
                 try:
                     cursor.execute(query)

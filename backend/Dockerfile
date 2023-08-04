@@ -5,6 +5,9 @@ COPY ./routers ./routers
 COPY ./database ./database
 COPY ./requirements.txt ./requirements.txt
 
+COPY ./.env ./.env
+
+
 RUN pip install -r requirements.txt
 
 EXPOSE 8000

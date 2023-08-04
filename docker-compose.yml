@@ -18,5 +18,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    environment:
+      - DB_SERVER=f1-database
+
     depends_on:
       - f1-database
