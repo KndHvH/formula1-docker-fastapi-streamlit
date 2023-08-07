@@ -1,10 +1,10 @@
 FROM python:3.11.4
 
+COPY ./requirements.txt ./requirements.txt
 COPY ./api.py ./api.py
 COPY ./auth ./auth
 COPY ./routers ./routers
 COPY ./database ./database
-COPY ./requirements.txt ./requirements.txt
 
 COPY ./.env ./.env
 

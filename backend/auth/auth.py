@@ -1,8 +1,6 @@
 import os
 import datetime
 import jwt
-from dotenv import load_dotenv
-from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 
@@ -11,12 +9,12 @@ class Auth:
     oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
     @staticmethod
-    def verify_password(self, plain_password, hashed_password):
-        return self.pwd_context.verify(plain_password, hashed_password)
+    def verify_password(plain_password, hashed_password):
+        return Auth.pwd_context.verify(plain_password, hashed_password)
 
     @staticmethod
-    def get_password_hash(self, password):
-        return self.pwd_context.hash(password)
+    def get_password_hash(password):
+        return Auth.pwd_context.hash(password)
 
     @staticmethod
     def create_access_token(data: dict):

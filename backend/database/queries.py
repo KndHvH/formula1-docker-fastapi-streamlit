@@ -31,9 +31,9 @@ class AuthQueries:
     @staticmethod
     def get_user_and_hash_by_username(username):
         conn = DatabaseConnection()
-        query = "SELECT username, hashed_password FROM users WHERE username = %s"
+        query = f"SELECT dsc_username, dsc_password_hash FROM users WHERE dsc_username = '{username}'"
         result = conn.get_value_by_query(query)
-        return {'username':result[0],'hash':result[1]}
+        if result: return {'username':result[0],'hash':result[1]}
     
     @staticmethod
     def create_user(user: User):

@@ -62,7 +62,7 @@ class DatabaseConnection:
     
 
 
-    def insert_values_on_table(self, values, table, norerun=False):
+    def insert_values_on_table(self, values, table):
         connection = self._get_connection()
         with connection:
             if connection is None: return None

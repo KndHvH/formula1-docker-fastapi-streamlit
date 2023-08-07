@@ -19,8 +19,8 @@ async def register(user: User):
 @router.post("/login")
 def login(login: Login):
     user = AuthQueries.get_user_and_hash_by_username(username=login.username)
-    if not user or not Auth.verify_password(login.password, user.hash):
+    if not user or not Auth.verify_password(login.password, user['hash']):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
 
-    access_token = Auth.create_access_token({"sub": user.username})
+    access_token = Auth.create_access_token({"sub": user['username']})
     return {"access_token": access_token, "token_type": "bearer"}
