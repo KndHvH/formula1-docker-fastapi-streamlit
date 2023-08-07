@@ -1,6 +1,7 @@
 FROM python:3.11.4
 
 COPY ./api.py ./api.py
+COPY ./auth ./auth
 COPY ./routers ./routers
 COPY ./database ./database
 COPY ./requirements.txt ./requirements.txt

@@ -7,7 +7,7 @@ BE_PORT = os.getenv("BE_PORT")
 
 
 class Formula1Data:
-    
+
     @staticmethod
     def get_driver_data():
         response = requests.get(f"http://{BE_SERVER}:{BE_PORT}/drivers")
@@ -25,3 +25,21 @@ class Formula1Data:
         response = requests.get(f"http://{BE_SERVER}:{BE_PORT}/fastest_laps")
         data = response.json()
         return data
+
+
+class Auth:
+    @staticmethod
+    def get_token(user,password):
+        response = requests.post(
+            f"http://{BE_SERVER}:{BE_PORT}/login",
+            json={'username':user,'password':password})
+        if response.status_code == 200: return response.json()["access_token"]
+        else: st.error("Erro de autenticação")
+
+
+    @staticmethod
+    def register_user(user,password,email):
+        token = f"http://{BE_SERVER}:{BE_PORT}/register"
+        response = requests.post(token, json={'username':user,'email':email,'password':password})
+        if response.status_code == 200: return True
+        return False
