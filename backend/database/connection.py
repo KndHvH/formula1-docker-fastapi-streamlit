@@ -35,10 +35,7 @@ class DatabaseConnection:
                     cursor.execute(query)
                     connection.commit()
 
-                    try:
-                        result = cursor.fetchall()
-                    except psycopg2.Error:
-                        result = None
+                    result = cursor.fetchall()
 
                     column_names = [desc[0] for desc in cursor.description]
                     df = pd.DataFrame(result, columns=column_names)
@@ -47,3 +44,42 @@ class DatabaseConnection:
                 except psycopg2.Error as error:
                     self.status = f"Erro ao realizar query: {error}\n---\nquery:{query}"
                     return None
+    
+    def get_value_by_query(self, query):
+        connection = self._get_connection()
+        with connection:
+            if connection is None: return None
+            with connection.cursor() as cursor:
+                try:
+                    cursor.execute(query)
+                    connection.commit()
+
+                    return cursor.fetchone()
+
+                except psycopg2.Error as error:
+                    self.status = f"Erro ao realizar query: {error}\n---\nquery:{query}"
+                    return None
+    
+
+
+    def insert_values_on_table(self, values, table, norerun=False):
+        connection = self._get_connection()
+        with connection:
+            if connection is None: return None
+            with connection.cursor() as cursor:
+                try:
+                    columns = [column for column in values.keys()]
+                    column_values = [values[column] for column in columns]
+
+                    query = f"""
+                            INSERT INTO {table} ({','.join(columns)}) 
+                            VALUES ({','.join(['%s'] * len(columns))})
+                            """
+                    
+                    cursor.execute(query, column_values)
+                    connection.commit()
+                    
+                except (Exception, Error) as error:
+                    self.status = f"Erro ao realizar query: {error}\n---\nquery:{query}"
+                    return None
+
